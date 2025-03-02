@@ -21,6 +21,18 @@ var authors = Name.CreateMany(
   Name.Create("Ritchie")
 );
 
-var book = authors is null
+var bookWithCasualNullChecking = authors is null
   ? null
   : Book.Create("THE MISSING BOOK", authors);
+
+var bookTitleNullable = bookWithCasualNullChecking?.Title;
+
+(bookWithCasualNullChecking?.Authors ?? Array.Empty<NameType>())
+  .Select(Printable)
+  .ToList()
+  .ForEach(Console.WriteLine);
+
+string Printable(NameType name) => name.Match(
+  (first, last) => $"{last}, {first[..1]}",
+  mononym => $"{mononym}"
+);

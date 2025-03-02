@@ -26,4 +26,15 @@ public static class Name
   => names.Any(name => name is null)
     ? null
     : (NameType[]?)names!;
+
+  public static R Match<R>(
+    this NameType name,
+    Func<string, string, R> fullName,
+    Func<string, R> mononym) =>
+    name switch
+    {
+      FullNameType fn => fullName(fn.FirstName, fn.LastName),
+      MononymType mono => mononym(mono.Name),
+      _ => throw new InvalidOperationException("Unexpected name type")
+    };
 }
